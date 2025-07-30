@@ -1,0 +1,17 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+# Install dev tools for hot reloading
+RUN npm install -g nodemon ts-node
+
+COPY . .
+
+EXPOSE 3000
+
+# Run source directly with hot reloading (assumes TypeScript; adjust if pure JS)
+CMD ["nodemon", "--legacy-watch", "--exec", "ts-node", "src/server.ts"]

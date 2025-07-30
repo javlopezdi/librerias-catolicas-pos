@@ -26,7 +26,6 @@ out/
 !.env.example
 
 # Docker
-Dockerfile*
 docker-compose.override.yml
 __pycache__/
 
