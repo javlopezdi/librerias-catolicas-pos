@@ -1,0 +1,27 @@
+# Dependencias y builds
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+yarn-error.log*
+
+# Archivos temporales y logs
+*.tmp
+*.log
+*.bak
+
+# Entorno y configs locales
+.env
+.env.local
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# OS específicos
+.DS_Store
+Thumbs.db
+
+# Angular específicos
+e2e/
+coverage/

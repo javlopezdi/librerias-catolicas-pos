@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# TypeScript
+dist/
+
+# Angular
+/dist/
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.angular/
+platform-browser.umd.js
+platform-browser.umd.min.js
+
+# Build outputs
+build/
+out/
+*.log
+*.tmp
+
+# Environment variables
+.env
+*.env
+!.env.example
+
+# Docker
+Dockerfile*
+docker-compose.override.yml
+__pycache__/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Miscellaneous
+*.bak
+*.bak*
+*.orig
+*.rej
+*.pyc
