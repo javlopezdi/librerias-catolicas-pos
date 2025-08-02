@@ -1,4 +1,4 @@
-// src/controllers/reportController.ts (actualizado con type guards opcionales por si acaso)
+// src/controllers/reportController.ts (actualizado con casts temporales para resolver TS2339)
 import { Request, Response } from 'express'
 import {
   getSalesByDay,
@@ -9,13 +9,13 @@ import {
 
 export const getSalesByDayController = async (req: Request, res: Response) => {
   try {
-    if (!req.user || !req.user._id) {
+    if (!(req as any).user || !(req as any).user._id) {
       return res.status(401).json({ error: 'Usuario no autenticado' })
     }
     const sales = await getSalesByDay(
       req.query,
-      req.user._id.toString(),
-      req.user.role
+      (req as any).user._id.toString(),
+      (req as any).user.role
     )
     res.json({ success: true, data: sales })
   } catch (error: any) {
@@ -25,13 +25,13 @@ export const getSalesByDayController = async (req: Request, res: Response) => {
 
 export const getTopProductsController = async (req: Request, res: Response) => {
   try {
-    if (!req.user || !req.user._id) {
+    if (!(req as any).user || !(req as any).user._id) {
       return res.status(401).json({ error: 'Usuario no autenticado' })
     }
     const products = await getTopProducts(
       req.query,
-      req.user._id.toString(),
-      req.user.role
+      (req as any).user._id.toString(),
+      (req as any).user.role
     )
     res.json({ success: true, data: products })
   } catch (error: any) {
@@ -41,13 +41,13 @@ export const getTopProductsController = async (req: Request, res: Response) => {
 
 export const getTotalIncomeController = async (req: Request, res: Response) => {
   try {
-    if (!req.user || !req.user._id) {
+    if (!(req as any).user || !(req as any).user._id) {
       return res.status(401).json({ error: 'Usuario no autenticado' })
     }
     const income = await getTotalIncome(
       req.query,
-      req.user._id.toString(),
-      req.user.role
+      (req as any).user._id.toString(),
+      (req as any).user.role
     )
     res.json({ success: true, data: income })
   } catch (error: any) {
@@ -60,13 +60,13 @@ export const getCreditLayawayReportsController = async (
   res: Response
 ) => {
   try {
-    if (!req.user || !req.user._id) {
+    if (!(req as any).user || !(req as any).user._id) {
       return res.status(401).json({ error: 'Usuario no autenticado' })
     }
     const reports = await getCreditLayawayReports(
       req.query,
-      req.user._id.toString(),
-      req.user.role
+      (req as any).user._id.toString(),
+      (req as any).user.role
     )
     res.json({ success: true, data: reports })
   } catch (error: any) {

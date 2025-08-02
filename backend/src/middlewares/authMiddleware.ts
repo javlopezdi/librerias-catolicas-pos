@@ -1,9 +1,8 @@
-// src/middlewares/authMiddleware.ts
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import User from '../models/User'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret' // Agregar a .env
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'
 
 export const protect = async (
   req: Request,
@@ -26,12 +25,13 @@ export const protect = async (
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { id: string }
-    req.user = await User.findById(decoded.id).select('-password')
-    if (!req.user) {
+    const user = await User.findById(decoded.id).select('-password')
+    if (!user) {
       return res
         .status(401)
         .json({ error: 'No autorizado, usuario no encontrado' })
     }
+    ;(req as any).user = user // Temporal cast to 'any' as fallback if types fail; remove once fixed
     next()
   } catch (error) {
     res.status(401).json({ error: 'No autorizado, token inválido' })
@@ -40,7 +40,8 @@ export const protect = async (
 
 export const authorize = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (!roles.includes(req.user.role)) {
+    const user = (req as any).user // Temporal cast
+    if (!roles.includes(user.role)) {
       return res
         .status(403)
         .json({ error: 'Acceso denegado, rol insuficiente' })

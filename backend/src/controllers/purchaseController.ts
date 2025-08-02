@@ -1,4 +1,4 @@
-// src/controllers/purchaseController.ts
+// src/controllers/purchaseController.ts (actualizado con cast temporal para resolver TS2339)
 import { Request, Response } from 'express'
 import {
   getPurchases,
@@ -32,7 +32,10 @@ export const getPurchaseByIdController = async (
 
 export const createPurchaseController = async (req: Request, res: Response) => {
   try {
-    const purchase = await createPurchase({ ...req.body, userId: req.user._id })
+    const purchase = await createPurchase({
+      ...req.body,
+      userId: (req as any).user._id,
+    })
     res.status(201).json({ success: true, data: purchase })
   } catch (error: any) {
     res.status(400).json({ error: error.message })

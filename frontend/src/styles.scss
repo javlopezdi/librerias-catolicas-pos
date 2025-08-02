@@ -1,0 +1,33 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css'; // Base, pero override
+
+:root {
+  --primary-color: #FF8C00; // Naranja del logo para botones/acentos
+  --text-heading: #333; // Gris oscuro para headings
+  --text-body: #666; // Gris medio para body
+  --background: #f9f9f9; // Off-white para fondos
+  --white: #ffffff;
+  --gray-light: #eee; // Para borders/separators
+
+  body {
+    font-family: Roboto, sans-serif;
+    background-color: var(--background);
+    margin: 0;
+    color: var(--text-body);
+  }
+
+  h1 { font-size: 24px; font-weight: bold; color: var(--text-heading); }
+  h2 { font-size: 18px; font-weight: bold; color: var(--text-heading); }
+  p, span { font-size: 14px; }
+  
+  // Override Material para minimalismo
+  .mat-button, .mat-raised-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+  }
+  
+  .mat-card {
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); // Sombra sutil
+    margin: 16px; // Espacio blanco
+  }
+}

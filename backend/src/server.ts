@@ -3,6 +3,8 @@ import express, { Express, Request, Response } from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
+import cron from 'node-cron'
+import { resetMonthlyMetrics } from './services/resetService'
 
 // Importar modelos
 import './models/User'
@@ -36,6 +38,7 @@ import purchaseRoutes from './routes/purchaseRoutes'
 import transferRoutes from './routes/transferRoutes'
 import importRoutes from './routes/importRoutes'
 import exportRoutes from './routes/exportRoutes'
+import resetRoutes from './routes/resetRoutes'
 
 // Middlewares
 import { errorHandler } from './middlewares/errorHandler'
@@ -67,6 +70,7 @@ app.use('/api/purchases', purchaseRoutes)
 app.use('/api/transfers', transferRoutes)
 app.use('/api/imports', importRoutes)
 app.use('/api/exports', exportRoutes)
+app.use('/api/reset', resetRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Backend MEAN con TypeScript y Docker funcionando!')
@@ -82,4 +86,22 @@ mongoose
   .catch((err) => console.error('MongoDB connection error:', err))
 
 const PORT: number = parseInt(process.env.PORT || '3000')
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+
+  // Cron job: Ejecutar el 1ro de cada mes a las 00:00 (formato: minuto hora día-mes mes día-semana)
+  cron.schedule(
+    '0 0 1 * *',
+    async () => {
+      try {
+        await resetMonthlyMetrics()
+        console.log('Métricas mensuales reseteadas automáticamente')
+      } catch (err) {
+        console.error('Error en cron job de reset mensual:', err)
+      }
+    },
+    {
+      timezone: 'America/Mexico_City', // Ajustar a zona horaria de México
+    }
+  )
+})

@@ -1,4 +1,3 @@
-// src/controllers/saleController.ts
 import { Request, Response } from 'express'
 import {
   getSales,
@@ -29,7 +28,10 @@ export const getSaleByIdController = async (req: Request, res: Response) => {
 
 export const createSaleController = async (req: Request, res: Response) => {
   try {
-    const sale = await createSale({ ...req.body, userId: req.user._id }) // Usar userId del token para auditoría
+    const sale = await createSale({
+      ...req.body,
+      userId: (req as any).user._id,
+    }) // Cast temporal para resolver TS2339
     res.status(201).json({ success: true, data: sale })
   } catch (error: any) {
     res.status(400).json({ error: error.message })

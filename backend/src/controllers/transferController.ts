@@ -1,4 +1,4 @@
-// src/controllers/transferController.ts
+// src/controllers/transferController.ts (actualizado con cast temporal para resolver TS2339)
 import { Request, Response } from 'express'
 import {
   getTransfers,
@@ -32,7 +32,10 @@ export const getTransferByIdController = async (
 
 export const createTransferController = async (req: Request, res: Response) => {
   try {
-    const transfer = await createTransfer({ ...req.body, userId: req.user._id })
+    const transfer = await createTransfer({
+      ...req.body,
+      userId: (req as any).user._id,
+    })
     res.status(201).json({ success: true, data: transfer })
   } catch (error: any) {
     res.status(400).json({ error: error.message })

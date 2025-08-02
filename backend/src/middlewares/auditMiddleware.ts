@@ -1,4 +1,4 @@
-// src/middlewares/auditMiddleware.ts
+// src/middlewares/auditMiddleware.ts (actualizado con cast temporal para resolver TS2339)
 import { Request, Response, NextFunction } from 'express'
 import AuditLog from '../models/AuditLog'
 
@@ -19,7 +19,7 @@ export const auditMiddleware = async (
       const action = `${req.method} on ${req.path}`
       const details = JSON.stringify({
         params: req.params,
-        body: req.body, // Cuidado: no loggear passwords u info sensible; filtrar si es necesario
+        body: req.body, // Cuidado: no loggear passwords u info sensible u filtrar si es necesario
         status: res.statusCode,
       })
       const ip =
@@ -27,7 +27,7 @@ export const auditMiddleware = async (
         req.headers['x-forwarded-for'] ||
         req.socket.remoteAddress ||
         'unknown'
-      const userId = req.user?._id
+      const userId = (req as any).user?._id
 
       if (userId) {
         const auditLog = new AuditLog({

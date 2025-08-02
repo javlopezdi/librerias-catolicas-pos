@@ -1,10 +1,10 @@
-// src/controllers/exportController.ts (actualizado para resolver el error con type guards)
+// src/controllers/exportController.ts (actualizado con casts temporales para resolver TS2339)
 import { Request, Response } from 'express'
 import { exportReportToPDF, exportReportToCSV } from '../services/exportService'
 
 export const exportReportController = async (req: Request, res: Response) => {
   try {
-    if (!req.user || !req.user._id) {
+    if (!(req as any).user || !(req as any).user._id) {
       return res.status(401).json({ error: 'Usuario no autenticado' })
     }
     const { reportType, format } = req.params
@@ -13,15 +13,15 @@ export const exportReportController = async (req: Request, res: Response) => {
       data = await exportReportToPDF(
         reportType,
         req.query,
-        req.user._id.toString(),
-        req.user.role
+        (req as any).user._id.toString(),
+        (req as any).user.role
       )
     } else {
       data = await exportReportToCSV(
         reportType,
         req.query,
-        req.user._id.toString(),
-        req.user.role
+        (req as any).user._id.toString(),
+        (req as any).user.role
       )
     }
 
